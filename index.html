@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Berke Kılıç</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0d1117;
+            color: rgb(49, 160, 245);
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                repeating-linear-gradient(
+                    0deg,
+                    rgba(49, 160, 245, 0.015) 0px,
+                    rgba(49, 160, 245, 0.015) 1px,
+                    transparent 1px,
+                    transparent 2px
+                );
+            pointer-events: none;
+            animation: scanlines 8s linear infinite;
+            z-index: 1;
+        }
+
+        @keyframes scanlines {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(10px); }
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: 100vh;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hologram-bg {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(49, 160, 245, 0.08) 0%, transparent 70%);
+            pointer-events: none;
+            animation: hologramPulse 4s ease-in-out infinite;
+            z-index: 0;
+            filter: blur(40px);
+        }
+
+        @keyframes hologramPulse {
+            0%, 100% { opacity: 0.3; transform: translate(-50%, -50%) scale(1); }
+            50% { opacity: 0.5; transform: translate(-50%, -50%) scale(1.1); }
+        }
+
+        .header {
+            position: relative;
+            margin-bottom: 30px;
+            padding: 30px;
+            border: 2px solid rgb(49, 160, 245);
+            background: rgba(13, 17, 23, 0.9);
+            box-shadow: 
+                0 0 15px rgba(49, 160, 245, 0.5),
+                inset 0 0 15px rgba(49, 160, 245, 0.1);
+            animation: headerGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes headerGlow {
+            0%, 100% { box-shadow: 
+                0 0 15px rgba(49, 160, 245, 0.5),
+                inset 0 0 15px rgba(49, 160, 245, 0.1); }
+            50% { box-shadow: 
+                0 0 25px rgba(49, 160, 245, 0.8),
+                inset 0 0 15px rgba(49, 160, 245, 0.2); }
+        }
+
+        .title {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            letter-spacing: 3px;
+            text-shadow: 
+                0 0 10px rgb(49, 160, 245),
+                0 0 20px rgb(49, 160, 245),
+                0 0 30px rgb(49, 160, 245);
+            animation: glitch 3s infinite;
+        }
+
+        @keyframes glitch {
+            0%, 100% { text-shadow: 
+                0 0 10px rgb(49, 160, 245),
+                0 0 20px rgb(49, 160, 245),
+                0 0 30px rgb(49, 160, 245); }
+            50% { text-shadow: 
+                0 0 20px rgb(49, 160, 245),
+                0 0 30px rgb(49, 160, 245),
+                0 0 40px rgb(49, 160, 245);
+            }
+        }
+
+        .subtitle {
+            font-size: 12px;
+            opacity: 0.8;
+            text-shadow: 0 0 10px rgb(49, 160, 245);
+        }
+
+        .terminal {
+            position: relative;
+            border: 2px solid rgb(49, 160, 245);
+            padding: 20px;
+            margin-bottom: 20px;
+            background: rgba(13, 17, 23, 0.95);
+            min-height: 400px;
+            max-height: 600px;
+            overflow-y: auto;
+            box-shadow: 
+                0 0 20px rgba(49, 160, 245, 0.3),
+                inset 0 0 20px rgba(49, 160, 245, 0.05);
+            animation: terminalFlicker 0.15s infinite;
+        }
+
+        @keyframes terminalFlicker {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.98; }
+        }
+
+        .terminal::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgb(49, 160, 245), transparent);
+            animation: scanlineMove 8s linear infinite;
+        }
+
+        @keyframes scanlineMove {
+            0% { transform: translateY(-10px); }
+            100% { transform: translateY(600px); }
+        }
+
+        .terminal::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .terminal::-webkit-scrollbar-track {
+            background: rgba(49, 160, 245, 0.1);
+        }
+
+        .terminal::-webkit-scrollbar-thumb {
+            background: rgb(49, 160, 245);
+            box-shadow: 0 0 10px rgba(49, 160, 245, 0.5);
+        }
+
+        .output {
+            margin-bottom: 15px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            text-shadow: 0 0 5px rgba(49, 160, 245, 0.3);
+        }
+
+        .prompt {
+            color: rgb(49, 160, 245);
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .command {
+            color: #fff;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px rgba(49, 160, 245, 0.2);
+        }
+
+        .error {
+            color: #ff0066;
+            text-shadow: 0 0 10px #ff0066;
+        }
+
+        .success {
+            color: rgb(49, 160, 245);
+            text-shadow: 0 0 10px rgb(49, 160, 245);
+        }
+
+        .input-line {
+            display: flex;
+            margin-top: 20px;
+            align-items: center;
+            padding: 15px;
+            border: 1px solid rgb(49, 160, 245);
+            background: rgba(13, 17, 23, 0.8);
+            box-shadow: 
+                0 0 15px rgba(49, 160, 245, 0.2),
+                inset 0 0 15px rgba(49, 160, 245, 0.05);
+        }
+
+        .input-line .prompt {
+            margin-right: 8px;
+            margin-bottom: 0;
+        }
+
+        input {
+            background-color: transparent;
+            border: none;
+            color: rgb(49, 160, 245);
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            outline: none;
+            flex: 1;
+            caret-color: rgb(49, 160, 245);
+            text-shadow: 0 0 10px rgba(49, 160, 245, 0.5);
+        }
+
+        input::placeholder {
+            color: rgba(49, 160, 245, 0.5);
+        }
+
+        .cursor {
+            animation: cursorBlink 1s infinite;
+            display: inline-block;
+            width: 8px;
+            height: 18px;
+            background-color: rgb(49, 160, 245);
+            margin-left: 5px;
+            box-shadow: 0 0 10px rgb(49, 160, 245);
+        }
+
+        @keyframes cursorBlink {
+            0%, 49% { opacity: 1; box-shadow: 0 0 10px rgb(49, 160, 245); }
+            50%, 100% { opacity: 0.2; box-shadow: 0 0 5px rgb(49, 160, 245); }
+        }
+
+        .help-text {
+            color: rgb(49, 160, 245);
+            opacity: 0.7;
+            font-size: 12px;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgb(49, 160, 245);
+            text-shadow: 0 0 5px rgba(49, 160, 245, 0.3);
+        }
+
+        .link {
+            color: #00ffff;
+            text-decoration: none;
+            cursor: pointer;
+            text-shadow: 0 0 10px #00ffff;
+            transition: all 0.3s;
+        }
+
+        .link:hover {
+            text-shadow: 
+                0 0 10px #00ffff,
+                0 0 20px #00ffff,
+                0 0 30px rgba(0, 255, 255, 0.5);
+            text-decoration: underline;
+        }
+
+        @keyframes distortion {
+            0%, 100% { transform: skewX(0deg); }
+            25% { transform: skewX(0.5deg); }
+            50% { transform: skewX(-0.5deg); }
+            75% { transform: skewX(0.5deg); }
+        }
+
+        .header, .terminal, .input-line {
+            animation-name: distortion;
+            animation-duration: 4s;
+            animation-iteration-count: infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="hologram-bg"></div>
+    
+    <div class="container">
+        <div class="header">
+            <div class="title">~$ Berke Kılıç</div>
+            <div class="subtitle">// A student software engineer's special place on the internet</div>
+        </div>
+
+        <div class="terminal" id="terminal"></div>
+
+        <div class="input-line">
+            <span class="prompt">visitor@kilic:~# </span>
+            <input type="text" id="commandInput" placeholder="type 'help' to see commands" autocomplete="off">
+            <span class="cursor"></span>
+        </div>
+
+        <div class="help-text">
+            💡 Pro tip: Try typing 'help', 'whoami', 'resume', 'projects', or 'contact'
+        </div>
+    </div>
+
+    <script>
+        const terminal = document.getElementById('terminal');
+        const commandInput = document.getElementById('commandInput');
+
+        const commands = {
+            help: `Available commands:
+  whoami        - Read about me
+  contact       - Get in touch
+  resume        - View my resume
+  projects      - Check my work
+  clear         - Clear console
+  help          - You are here`,
+
+            whoami: `Hello, my name is Berke a.k.a Clerance and I'm 21 years old.
+I have been interested in software for 5 years.
+Currently studying Software Engineering at Erciyes University.
+Graduated from Kocaeli University with an associate degree in computer programming.`,
+
+            resume: `RESUME - Berke Kılıç
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📚 EDUCATION
+• B.Sc. Software Engineering - Erciyes University (2025-Ongoing, GPA: 3.62/4.00)
+• Erasmus Exchange - AGH University, Poland (2025)
+• Associate Degree in Computer Programming - Kocaeli University (2021-2023, GPA: 3.38/4.00)
+
+💼 EXPERIENCE
+• IoT Observability Platform for Battery Testing - AGH University (2025-Ongoing)
+  Volunteer Internship, developing real-world IoT solutions
+  
+• Test Automation Intern - Netaş Telecommunication, Istanbul (Dec 2022)
+  Web test automation with Selenium, Java script development
+
+🛠️  TECHNICAL SKILLS
+• Languages: Java, C#, Python, C, C++, JavaScript, HTML, CSS
+• Tools & Frameworks: Selenium, Testing Automation, Git, Docker`,
+
+            keywords: `Buzzwords & Technologies:
+java, c#, python, c, c++, javascript, html, css, flutter,
+discord.js, selenium, kali linux, metasploit, orange, kaggle,
+web development, mobile development, test automation, iot,
+cybersecurity, machine learning, penetration testing, oop, agile`,
+
+            projects: `PROJECTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+→ Discord.js Bot Development
+  Custom Discord bot with advanced features
+  JavaScript/Node.js backend integration
+  
+→ IoT Observability Platform (AGH University)
+  Battery testing monitoring system
+  Real-time data visualization & analysis
+  
+→ Test Automation Suite (Netaş Telecom)
+  Selenium-based web automation testing
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`,
+
+            contact: `📧 GET IN TOUCH
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Email: <a href="mailto:kilic-berke@hotmail.com" class="link">kilic-berke@hotmail.com</a>
+Phone: <a href="tel:+905307664158" class="link">+90 530 766 4158</a>
+LinkedIn: <a href="https://www.linkedin.com/in/berke-kilic/" class="link">linkedin.com/in/berke-kilic</a>
+GitHub: <a href="https://github.com/clerancebae" class="link">github.com/clerancebae</a>
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Feel free to reach out! I'm always open to new opportunities and collaborations.`,
+
+            clear: null
+        };
+
+        function printOutput(text, isError = false) {
+            const outputDiv = document.createElement('div');
+            outputDiv.className = 'output';
+            
+            if (text === null) {
+                terminal.innerHTML = '';
+                return;
+            }
+            
+            if (isError) {
+                outputDiv.innerHTML = `<span class="error">${text}</span>`;
+            } else {
+                outputDiv.innerHTML = text;
+            }
+            
+            terminal.appendChild(outputDiv);
+            terminal.scrollTop = terminal.scrollHeight;
+        }
+
+        function executeCommand(cmd) {
+            const trimmedCmd = cmd.trim().toLowerCase();
+            
+            const cmdDiv = document.createElement('div');
+            cmdDiv.className = 'output';
+            cmdDiv.innerHTML = `<span class="prompt">visitor@kilic:~#</span> <span class="command">${cmd}</span>`;
+            terminal.appendChild(cmdDiv);
+            
+            if (trimmedCmd === 'clear') {
+                terminal.innerHTML = '';
+            } else if (trimmedCmd in commands) {
+                printOutput(commands[trimmedCmd]);
+            } else if (trimmedCmd === '') {
+                // Do nothing
+            } else {
+                printOutput(`command not found: ${trimmedCmd}`, true);
+            }
+            
+            terminal.scrollTop = terminal.scrollHeight;
+        }
+
+        commandInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                const cmd = commandInput.value;
+                executeCommand(cmd);
+                commandInput.value = '';
+            }
+        });
+
+        window.addEventListener('load', function() {
+            printOutput(`Welcome! Type 'help' to list available commands.`);
+        });
+
+        commandInput.focus();
+    </script>
+</body>
+</html>
