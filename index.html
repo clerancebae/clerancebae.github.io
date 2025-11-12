@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Berke Kılıç</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         * {
             margin: 0;
@@ -314,6 +315,19 @@
     </div>
 
     <script>
+        // Supabase Configuration
+        const SUPABASE_URL = 'https://lpceumnwbolilkafyjsa.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxwY2V1bW53Ym9saWxrYWZ5anNhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI5NTU2NjYsImV4cCI6MjA3ODUzMTY2Nn0.pG3oYgb6Y44E1xqsAJR0Hd-MkI7KPP64pHz-gxwoXug';
+        
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        
+        // Generate or retrieve visitor ID
+        let visitorId = localStorage.getItem('visitorId');
+        if (!visitorId) {
+            visitorId = 'visitor_' + Math.random().toString(36).substr(2, 9);
+            localStorage.setItem('visitorId', visitorId);
+        }
+
         const terminal = document.getElementById('terminal');
         const commandInput = document.getElementById('commandInput');
 
@@ -380,6 +394,24 @@ Feel free to reach out! I'm always open to new opportunities and collaborations.
             clear: null
         };
 
+        async function logCommand(cmd) {
+            try {
+                const { data, error } = await supabase
+                    .from('visitors_log')
+                    .insert([
+                        {
+                            command: cmd,
+                            visitor_id: visitorId,
+                            user_agent: navigator.userAgent
+                        }
+                    ]);
+                
+                if (error) console.error('Supabase error:', error);
+            } catch (err) {
+                console.error('Failed to log command:', err);
+            }
+        }
+
         function printOutput(text, isError = false) {
             const outputDiv = document.createElement('div');
             outputDiv.className = 'output';
@@ -406,6 +438,9 @@ Feel free to reach out! I'm always open to new opportunities and collaborations.
             cmdDiv.className = 'output';
             cmdDiv.innerHTML = `<span class="prompt">visitor@kilic:~#</span> <span class="command">${cmd}</span>`;
             terminal.appendChild(cmdDiv);
+            
+            // Log command to Supabase
+            logCommand(cmd);
             
             if (trimmedCmd === 'clear') {
                 terminal.innerHTML = '';
