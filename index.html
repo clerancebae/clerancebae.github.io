@@ -326,10 +326,10 @@
 
     <script>
         // Supabase Configuration
-        const SUPABASE_URL = 'https://qzdwafgrfgnhaoxvsrah.supabase.co';
-        const SUPABASE_KEY = 'sb_publishable_bLzpofH9jVi5z9Pa2_imAA_LmZPiwy-';
-        
-        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const SUPABASE_URL = 'https://qzdwafgrfgnhaoxvsrah.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_bLzpofH9jVi5z9Pa2_imAA_LmZPiwy-';
+
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
         
         // Generate or retrieve visitor ID
         let visitorId = localStorage.getItem('visitorId');
