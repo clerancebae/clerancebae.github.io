@@ -404,24 +404,27 @@ Feel free to reach out! I'm always open to new opportunities and collaborations.
             clear: null
         };
 
-        async function logCommand(cmd) {
+           async function logCommand(cmd) {
             try {
-                const { data, error } = await supabaseClient
-                    .from('visitors_log')
-                    .insert([
-                        {
-                            command: cmd,
-                            visitor_id: visitorId,
-                            user_agent: navigator.userAgent
-                        }
-                    ]);
-                
-                if (error) console.error('Supabase error:', error);
+                const { error } = await supabaseClient
+                .from('visitors_log')
+                .insert([
+                    {
+                        command: cmd,
+                        visitor_id: visitorId,
+                        user_agent: navigator.userAgent
+                    }
+                    ], { returning: 'minimal' });  
+
+                if (error) {
+                    console.error('Supabase log error:', error);
+                } else {
+                    console.log('✅ Succesfully logged. ', cmd);
+                }
             } catch (err) {
                 console.error('Failed to log command:', err);
             }
         }
-
         function printOutput(text, isError = false) {
             const outputDiv = document.createElement('div');
             outputDiv.className = 'output';
